@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Specifications Table Generator</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1.2;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .btn-danger {
+      background: #ff6b6b;
+      color: white;
+    }
+    .btn-danger:hover { background: #fa5252; }
+
+    .btn-primary {
+      background: #4c6ef5;
+      color: white;
+    }
+    .btn-primary:hover { background: #364fc7; }
+
+    .btn-secondary {
+      background: #868e96;
+      color: white;
+    }
+    .btn-secondary:hover { background: #495057; }
+
+    #output {
+      max-width: 900px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      padding: 12px;
+      font-family: monospace;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+      box-sizing: border-box;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* Tab styling */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #ddd;
+      margin-top: 15px;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #495057;
+      border-bottom: 3px solid transparent;
+      transition: 0.2s;
+    }
+    .tab.active {
+      border-bottom: 3px solid #4c6ef5;
+      color: #4c6ef5;
+    }
+    .tab-content {
+      display: none;
+      margin-top: 15px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Specifications Table Generator</h1>
+
+  <div id="container"></div>
+
+  <div id="output">
+    <div class="actions">
+      <button class="btn-primary" onclick="generateTable()">Generate Table</button>
+      <button id="copyBtn" class="btn-secondary" onclick="copyTable()">Copy Table</button>
+      <button class="btn-primary" onclick="addRow()">+ Add Row</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('code')">Code</div>
+      <div class="tab" onclick="switchTab('preview')">Preview</div>
+    </div>
+
+    <!-- Code Content -->
+    <div id="tab-code" class="tab-content active">
+      <textarea id="result" readonly></textarea>
+    </div>
+
+    <!-- Preview Content -->
+    <div id="tab-preview" class="tab-content">
+      <div id="preview-box"></div>
+    </div>
+  </div>
+
+  <script>
+    let defaultData = [
+      ["Layar", "IPS LCD, 120Hz, 450 nits (typ), 600 nits (HBM)"],
+      ["Chipset", "Mediatek Helio G81 Ultra"],
+      ["RAM", "6 GB"],
+      ["Memori", "128 GB"],
+      ["Kamera Belakang", "50+2MP"],
+      ["Kamera Depan", "13MP"],
+      ["Baterai", "5160 mAh"],
+      ["Charging", "18W"]
+    ];
+
+    function renderRows() {
+      const container = document.getElementById("container");
+      container.innerHTML = "";
+
+      defaultData.forEach((row, index) => {
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row";
+
+        rowDiv.innerHTML = `
+          <input type="text" value="${row[0]}" placeholder="Specification" oninput="updateRow(${index},0,this.value)">
+          <input type="text" value="${row[1]}" placeholder="Value" oninput="updateRow(${index},1,this.value)">
+          <button class="btn-danger" onclick="deleteRow(${index})">X</button>
+        `;
+
+        container.appendChild(rowDiv);
+      });
+    }
+
+    function updateRow(i, j, value) {
+      defaultData[i][j] = value;
+    }
+
+    function deleteRow(i) {
+      defaultData.splice(i, 1);
+      renderRows();
+    }
+
+    function addRow() {
+      defaultData.push(["", ""]);
+      renderRows();
+    }
+
+    function generateTable() {
+      let html = `<table style="border-collapse: separate; border-spacing: 2px; width: 100%; border: 1px solid #ccc;">\n`;
+      defaultData.forEach(row => {
+        html += `  <tr>\n    <th style="text-align:left; padding:8px 12px; border:1px solid #ccc; font-weight:600; color:black;">${row[0]}</th>\n    <td style="font-weight:normal; color:black; text-align:left; padding:8px 12px; border:1px solid #ccc;">${row[1]}</td>\n  </tr>\n`;
+      });
+      html += "</table>";
+
+      document.getElementById("result").value = html;
+      document.getElementById("preview-box").innerHTML = html;
+    }
+
+    async function copyTable() {
+      const code = document.getElementById("result").value;
+      try {
+        await navigator.clipboard.writeText(code);
+        const btn = document.getElementById("copyBtn");
+        const originalText = btn.innerText;
+        btn.innerText = "Copied!";
+        btn.style.background = "#37b24d";
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.background = "";
+        }, 1500);
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+      document.querySelector(`.tab:nth-child(${tab === 'code' ? 1 : 2})`).classList.add("active");
+      document.getElementById(`tab-${tab}`).classList.add("active");
+    }
+
+    renderRows();
+    generateTable();
+  </script>
+
+</body>
+</html>

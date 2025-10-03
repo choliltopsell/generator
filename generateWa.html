@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Link Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 700px;
+    }
+    h2 {
+      margin-bottom: 15px;
+      color: #333;
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+    .tabs {
+      display: flex;
+      margin-top: 20px;
+      border-bottom: 2px solid #eee;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 8px 8px 0 0;
+      background: #f1f1f1;
+    }
+    .tab.active {
+      background: #4CAF50;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+      margin-top: 15px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      overflow-x: auto;
+    }
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      display: inline-block;
+    }
+    .btn-copy {
+      background: #007BFF;
+      color: white;
+    }
+    .btn-test {
+      background: #4CAF50;
+      color: white;
+      text-decoration: none;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>WhatsApp Link Generator</h2>
+    <label for="phone">Nomor WhatsApp:</label>
+    <input type="text" id="phone" value="6285892599688" placeholder="contoh: 628123456789 atau 08123456789">
+
+    <label for="message">Pesan:</label>
+    <textarea id="message" rows="3" placeholder="Tulis pesan...">halo kak, saya mau tanya..</textarea>
+
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('code')">Code</div>
+      <div class="tab" onclick="openTab('preview')">Preview</div>
+    </div>
+
+    <div id="code" class="tab-content active">
+      <pre id="generatedCode"></pre>
+      <button class="btn btn-copy" onclick="copyCode()">Copy Code</button>
+    </div>
+
+    <div id="preview" class="tab-content">
+      <div id="previewContent"></div>
+      <button class="btn btn-copy" onclick="copyCode()">Copy Code</button>
+      <a id="testLink" href="#" target="_blank" class="btn btn-test">Test Link</a>
+    </div>
+  </div>
+
+  <script>
+    function formatPhone(phone) {
+      phone = phone.replace(/\D/g, ''); // hanya angka
+      if (phone.startsWith("0")) {
+        return "62" + phone.substring(1);
+      }
+      return phone;
+    }
+
+    function generateLink() {
+      let phone = document.getElementById("phone").value.trim();
+      let message = document.getElementById("message").value.trim();
+      phone = formatPhone(phone);
+
+      let encodedMessage = encodeURIComponent(message);
+      let link = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodedMessage}`;
+
+      // hasil code
+      document.getElementById("generatedCode").innerText = link;
+
+      // hasil preview
+      document.getElementById("previewContent").innerHTML = `
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Pesan:</strong> ${message}</p>
+      `;
+      document.getElementById("testLink").href = link;
+    }
+
+    function copyCode() {
+      const code = document.getElementById("generatedCode").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert("Code berhasil dicopy!");
+      });
+    }
+
+    function openTab(tabName) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      document.querySelector(`.tab[onclick="openTab('${tabName}')"]`).classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+    }
+
+    // update otomatis
+    document.getElementById("phone").addEventListener("input", generateLink);
+    document.getElementById("message").addEventListener("input", generateLink);
+
+    // jalankan pertama kali
+    generateLink();
+  </script>
+</body>
+</html>
