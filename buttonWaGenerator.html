@@ -1,233 +1,114 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WhatsApp Button Generator</title>
-  </head>
-  <body
-    style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 30px"
-  >
-    <h2 style="text-align: center">WhatsApp Chat Button Generator</h2>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WhatsApp Button Generator (Inline CSS)</title>
+</head>
+<body style="font-family: Arial, sans-serif; background: #f9f9f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px;">
 
-    <div
-      style="
-        max-width: 500px;
-        margin: 0 auto;
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      "
-    >
-      <label style="display: block; margin-top: 10px; font-weight: bold"
-        >Nomor WhatsApp:</label
-      >
-      <div style="display: flex; gap: 6px; align-items: center">
-        <input
-          type="text"
-          id="waCode"
-          value="62"
-          style="
-            width: 70px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-          "
-        />
-        <input
-          type="text"
-          id="waNumber"
-          placeholder="81234567890"
-          style="
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-          "
-        />
-      </div>
+  <div id="container" style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 750px;">
+    <h2 style="text-align: center; color: #333; margin-bottom: 15px;">WhatsApp Button Generator</h2>
 
-      <label style="display: block; margin-top: 10px; font-weight: bold"
-        >Pesan Default:</label
-      >
-      <textarea
-        id="waMessage"
-        placeholder="Halo, saya ingin bertanya tentang produk..."
-        style="
-          width: 100%;
-          margin-top: 4px;
-          box-sizing: border-box;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-        "
-      ></textarea>
+    <label for="intro" style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Teks Sebelum Tombol:</label>
+    <input id="intro" type="text" value="Mau tau detail pre-order?" placeholder="contoh: Mau tau promo terbaru?" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; box-sizing: border-box;">
 
-      <label style="display: block; margin-top: 10px; font-weight: bold"
-        >Teks Tombol:</label
-      >
-      <input
-        type="text"
-        id="waText"
-        value="Chat via WhatsApp"
-        style="
-          width: 100%;
-          box-sizing: border-box;
-          margin-top: 4px;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-        "
-      />
+    <label for="phone" style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Nomor WhatsApp:</label>
+    <input id="phone" type="text" value="6285892599688" placeholder="contoh: 628123456789 atau 08123456789" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; box-sizing: border-box;">
 
-      <label style="display: block; margin-top: 10px; font-weight: bold"
-        >Bentuk Tombol:</label
-      >
-      <select
-        id="waShape"
-        style="
-          width: 100%;
-          margin-top: 4px;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 6px;
-        "
-      >
-        <option value="rounded">Rounded</option>
-        <option value="square">Square</option>
-        <option value="circle">Circle (icon only)</option>
-      </select>
+    <label for="message" style="font-weight: bold; display: block; margin-top: 10px; margin-bottom: 5px;">Pesan WhatsApp:</label>
+    <textarea id="message" rows="3" placeholder="Tulis pesan..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; box-sizing: border-box;">halo kak, saya mau tanya..</textarea>
 
-      <div id="preview" style="text-align: center; margin-top: 25px">
-        <a
-          href="#"
-          id="previewButton"
-          target="_blank"
-          style="
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: #25d366;
-            color: white;
-            font-weight: bold;
-            padding: 10px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-          "
-        >
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-            style="width: 22px; height: 22px"
-          />
-          <span id="previewText">Chat via WhatsApp</span>
-        </a>
-      </div>
-
-      <label style="display: block; margin-top: 20px; font-weight: bold"
-        >Kode HTML:</label
-      >
-      <pre
-        id="output"
-        style="
-          background: #eee;
-          padding: 10px;
-          border-radius: 6px;
-          font-size: 14px;
-          white-space: pre-wrap;
-          word-break: break-word;
-          overflow-x: auto;
-        "
-      ></pre>
-
-      <button
-        id="copyBtn"
-        style="
-          background: black;
-          color: white;
-          font-weight: bold;
-          border: none;
-          padding: 10px 20px;
-          border-radius: 8px;
-          cursor: pointer;
-          margin-top: 10px;
-          display: block;
-          width: 100%;
-        "
-      >
-        📋 Copy Code
-      </button>
+    <div style="display: flex; margin-top: 20px; border-bottom: 2px solid #eee; ">
+      <div id="tab-code" onclick="openTab('code')" style="flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0; background: #4CAF50; color: white;">Code</div>
+      <div id="tab-preview" onclick="openTab('preview')" style="flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: bold; border-radius: 8px 8px 0 0; background: #f1f1f1;">Preview</div>
     </div>
 
-    <script>
-      const waCode = document.getElementById("waCode");
-      const waNumber = document.getElementById("waNumber");
-      const waMessage = document.getElementById("waMessage");
-      const waText = document.getElementById("waText");
-      const waShape = document.getElementById("waShape");
-      const previewButton = document.getElementById("previewButton");
-      const previewText = document.getElementById("previewText");
-      const output = document.getElementById("output");
-      const copyBtn = document.getElementById("copyBtn");
+    <div id="code" style="display:block;">
+      <pre id="generatedCode" style="background: #f4f4f4; padding: 12px; border-radius: 8px; border: 1px solid #ddd; overflow-x: auto; white-space: pre-wrap; word-break: break-word; font-size: 13px;"></pre>
+      <button onclick="copyCode()" style="padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #007BFF; color: white;">Copy Code</button>
+      <a href="index.html" style="color: white; text-decoration: none;"><button style="padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: black; color: white;">Kembali ke Beranda</button></a>
+    </div>
 
-      function cleanNumber(num) {
-        num = num.replace(/\D/g, "");
-        if (num.startsWith("0")) num = num.substring(1);
-        return num;
+    <div id="preview" style="display:none;">
+      <div id="previewContent" style="padding:8px 0; margin: 25px 0px;"></div>
+      <button onclick="copyCode()" style="padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: #007BFF; color: white;">Copy Code</button>
+      <a id="testLink" href="#" target="_blank" style="padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; background: #4CAF50; color: white; text-decoration: none; margin-left:8px;">Test Link</a>
+      <a href="index.html" style="color: white; text-decoration: none;"><button style="padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: black; color: white;">Kembali ke Beranda</button></a>
+    </div>
+  </div>
+
+  <script>
+    function formatPhone(phone) {
+      phone = phone.replace(/\D/g, "");
+      if (!phone) return "";
+      if (phone.startsWith("0")) return "62" + phone.substring(1);
+      if (phone.startsWith("8")) return "62" + phone;
+      return phone;
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");
+    }
+
+    function showToast(msg="Copied!") {
+      let t=document.getElementById("__toast");
+      if(!t){
+        t=document.createElement("div");
+        t.id="__toast";
+        t.setAttribute("style","position:fixed;right:20px;bottom:20px;background:rgba(0,0,0,0.8);color:#fff;padding:10px 14px;border-radius:8px;font-weight:600;z-index:9999;transition:opacity 0.3s;");
+        document.body.appendChild(t);
       }
+      t.textContent=msg;
+      t.style.opacity="1";
+      setTimeout(()=>{t.style.opacity="0";},1500);
+    }
 
-      function generateButton() {
-        const code = waCode.value.replace(/\D/g, "") || "62";
-        let number = cleanNumber(waNumber.value);
-        const message = encodeURIComponent(waMessage.value.trim());
-        const text = waText.value || "Chat via WhatsApp";
-        const shape = waShape.value;
+    function generateLink() {
+      const intro = document.getElementById("intro").value.trim();
+      let phone = document.getElementById("phone").value.trim();
+      let message = document.getElementById("message").value.trim();
+      phone = formatPhone(phone || "6285892599688");
+      const encodedMessage = encodeURIComponent(message);
+      const link = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodedMessage}`;
 
-        const fullNumber = code + number;
-        const url = `https://wa.me/${fullNumber}?text=${message}`;
+      const html = `<span>${escapeHtml(intro)} <a href="${link}" target="_blank" style="align-items:center;gap:5px;background-color:#25D366;color:white;font-weight:600;padding:5px 10px;border-radius:5px;text-decoration:none;transition:all 0.2s ease;"><img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:20px;height:20px;vertical-align:middle;' alt='WA'>Chat via WhatsApp</a></span>`;
 
-        previewButton.href = url;
-        previewText.textContent = text;
+      document.getElementById("generatedCode").textContent = html;
+      document.getElementById("previewContent").innerHTML = html;
+      document.getElementById("testLink").href = link;
+    }
 
-        let borderRadius = "8px";
-        let padding = "10px 18px";
-        let innerHTML = `<img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:22px;height:22px;'><span>${text}</span>`;
+    function copyCode() {
+      const code = document.getElementById("generatedCode").textContent;
+      navigator.clipboard.writeText(code).then(() => showToast("Code disalin!"));
+    }
 
-        if (shape === "square") {
-          borderRadius = "4px";
-        } else if (shape === "circle") {
-          borderRadius = "50%";
-          padding = "12px";
-          innerHTML = `<img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:22px;height:22px;'>`;
-        }
-
-        previewButton.innerHTML = innerHTML;
-        previewButton.style.borderRadius = borderRadius;
-        previewButton.style.padding = padding;
-
-        const html = `<a href="${url}" target="_blank"
-  style="display:inline-flex;align-items:center;gap:8px;background-color:#25D366;color:white;font-weight:bold;padding:${padding};border-radius:${borderRadius};text-decoration:none;transition:all 0.2s ease;">
-  <img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:22px;height:22px;'>
-  ${shape !== "circle" ? text : ""}
-</a>`;
-
-        output.textContent = html;
+    function openTab(tabName) {
+      const tabCode = document.getElementById("tab-code");
+      const tabPreview = document.getElementById("tab-preview");
+      if (tabName === "code") {
+        document.getElementById("code").style.display = "block";
+        document.getElementById("preview").style.display = "none";
+        tabCode.style.background = "#4CAF50";
+        tabCode.style.color = "white";
+        tabPreview.style.background = "#f1f1f1";
+        tabPreview.style.color = "black";
+      } else {
+        document.getElementById("code").style.display = "none";
+        document.getElementById("preview").style.display = "block";
+        tabPreview.style.background = "#4CAF50";
+        tabPreview.style.color = "white";
+        tabCode.style.background = "#f1f1f1";
+        tabCode.style.color = "black";
       }
+    }
 
-      document
-        .querySelectorAll("input, textarea, select")
-        .forEach((el) => el.addEventListener("input", generateButton));
+    document.querySelectorAll("#intro,#phone,#message").forEach(el => {
+      el.addEventListener("input", generateLink);
+    });
 
-      copyBtn.addEventListener("click", () => {
-        navigator.clipboard.writeText(output.textContent);
-        copyBtn.textContent = "✅ Code Copied!";
-        setTimeout(() => (copyBtn.textContent = "📋 Copy Code"), 2000);
-      });
-
-      generateButton();
-    </script>
-  </body>
+    generateLink();
+  </script>
+</body>
 </html>
