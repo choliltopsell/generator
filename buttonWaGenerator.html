@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp Button Generator</title>
+  </head>
+  <body
+    style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 30px"
+  >
+    <h2 style="text-align: center">WhatsApp Chat Button Generator</h2>
+
+    <div
+      style="
+        max-width: 500px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <label style="display: block; margin-top: 10px; font-weight: bold"
+        >Nomor WhatsApp:</label
+      >
+      <div style="display: flex; gap: 6px; align-items: center">
+        <input
+          type="text"
+          id="waCode"
+          value="62"
+          style="
+            width: 70px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+          "
+        />
+        <input
+          type="text"
+          id="waNumber"
+          placeholder="81234567890"
+          style="
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+          "
+        />
+      </div>
+
+      <label style="display: block; margin-top: 10px; font-weight: bold"
+        >Pesan Default:</label
+      >
+      <textarea
+        id="waMessage"
+        placeholder="Halo, saya ingin bertanya tentang produk..."
+        style="
+          width: 100%;
+          margin-top: 4px;
+          box-sizing: border-box;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        "
+      ></textarea>
+
+      <label style="display: block; margin-top: 10px; font-weight: bold"
+        >Teks Tombol:</label
+      >
+      <input
+        type="text"
+        id="waText"
+        value="Chat via WhatsApp"
+        style="
+          width: 100%;
+          box-sizing: border-box;
+          margin-top: 4px;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        "
+      />
+
+      <label style="display: block; margin-top: 10px; font-weight: bold"
+        >Bentuk Tombol:</label
+      >
+      <select
+        id="waShape"
+        style="
+          width: 100%;
+          margin-top: 4px;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+        "
+      >
+        <option value="rounded">Rounded</option>
+        <option value="square">Square</option>
+        <option value="circle">Circle (icon only)</option>
+      </select>
+
+      <div id="preview" style="text-align: center; margin-top: 25px">
+        <a
+          href="#"
+          id="previewButton"
+          target="_blank"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #25d366;
+            color: white;
+            font-weight: bold;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+          "
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+            style="width: 22px; height: 22px"
+          />
+          <span id="previewText">Chat via WhatsApp</span>
+        </a>
+      </div>
+
+      <label style="display: block; margin-top: 20px; font-weight: bold"
+        >Kode HTML:</label
+      >
+      <pre
+        id="output"
+        style="
+          background: #eee;
+          padding: 10px;
+          border-radius: 6px;
+          font-size: 14px;
+          white-space: pre-wrap;
+          word-break: break-word;
+          overflow-x: auto;
+        "
+      ></pre>
+
+      <button
+        id="copyBtn"
+        style="
+          background: black;
+          color: white;
+          font-weight: bold;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 8px;
+          cursor: pointer;
+          margin-top: 10px;
+          display: block;
+          width: 100%;
+        "
+      >
+        📋 Copy Code
+      </button>
+    </div>
+
+    <script>
+      const waCode = document.getElementById("waCode");
+      const waNumber = document.getElementById("waNumber");
+      const waMessage = document.getElementById("waMessage");
+      const waText = document.getElementById("waText");
+      const waShape = document.getElementById("waShape");
+      const previewButton = document.getElementById("previewButton");
+      const previewText = document.getElementById("previewText");
+      const output = document.getElementById("output");
+      const copyBtn = document.getElementById("copyBtn");
+
+      function cleanNumber(num) {
+        num = num.replace(/\D/g, "");
+        if (num.startsWith("0")) num = num.substring(1);
+        return num;
+      }
+
+      function generateButton() {
+        const code = waCode.value.replace(/\D/g, "") || "62";
+        let number = cleanNumber(waNumber.value);
+        const message = encodeURIComponent(waMessage.value.trim());
+        const text = waText.value || "Chat via WhatsApp";
+        const shape = waShape.value;
+
+        const fullNumber = code + number;
+        const url = `https://wa.me/${fullNumber}?text=${message}`;
+
+        previewButton.href = url;
+        previewText.textContent = text;
+
+        let borderRadius = "8px";
+        let padding = "10px 18px";
+        let innerHTML = `<img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:22px;height:22px;'><span>${text}</span>`;
+
+        if (shape === "square") {
+          borderRadius = "4px";
+        } else if (shape === "circle") {
+          borderRadius = "50%";
+          padding = "12px";
+          innerHTML = `<img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:22px;height:22px;'>`;
+        }
+
+        previewButton.innerHTML = innerHTML;
+        previewButton.style.borderRadius = borderRadius;
+        previewButton.style.padding = padding;
+
+        const html = `<a href="${url}" target="_blank"
+  style="display:inline-flex;align-items:center;gap:8px;background-color:#25D366;color:white;font-weight:bold;padding:${padding};border-radius:${borderRadius};text-decoration:none;transition:all 0.2s ease;">
+  <img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' style='width:22px;height:22px;'>
+  ${shape !== "circle" ? text : ""}
+</a>`;
+
+        output.textContent = html;
+      }
+
+      document
+        .querySelectorAll("input, textarea, select")
+        .forEach((el) => el.addEventListener("input", generateButton));
+
+      copyBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(output.textContent);
+        copyBtn.textContent = "✅ Code Copied!";
+        setTimeout(() => (copyBtn.textContent = "📋 Copy Code"), 2000);
+      });
+
+      generateButton();
+    </script>
+  </body>
+</html>
