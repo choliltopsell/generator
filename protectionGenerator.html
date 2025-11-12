@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garansi Style Generator (Inline - Fixed)</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f6fa; margin: 0; padding: 20px; color: #333;">
+  <h1 style="text-align: center; margin-bottom: 20px;">Garansi Style Generator (Pastel Border Full)</h1>
+
+  <div id="container" style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); max-width: 700px; margin: 0 auto 20px auto;"></div>
+
+  <div id="output" style="max-width: 700px; margin: 0 auto;">
+    <div class="actions" style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+      <button id="genBtn" class="btn-primary" style="padding: 10px 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; transition: background 0.2s ease-in-out; background: #4c6ef5; color: white;">Generate</button>
+      <button id="copyBtn" class="btn-secondary" style="padding: 10px 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; transition: background 0.2s ease-in-out; background: #868e96; color: white;">Copy Code</button>
+      <button id="addBtn" class="btn-primary" style="padding: 10px 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; transition: background 0.2s ease-in-out; background: #4c6ef5; color: white;">+ Add Row</button>
+      <a href="index.html" style="color: white; text-decoration: none;"><button style="padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: black; color: white;">Kembali ke Beranda</button></a>
+    </div>
+
+    <div class="tabs" style="display: flex; border-bottom: 2px solid #ddd; margin-top: 15px;">
+      <div id="tabCodeBtn" class="tab active" style="padding: 10px 20px; cursor: pointer; font-weight: bold; color: #4c6ef5; border-bottom: 3px solid #4c6ef5;">Code</div>
+      <div id="tabPreviewBtn" class="tab" style="padding: 10px 20px; cursor: pointer; font-weight: bold; color: #495057; border-bottom: 3px solid transparent;">Preview</div>
+    </div>
+
+    <div id="tab-code" class="tab-content active" style="display: block; margin-top: 15px;">
+      <textarea id="result" readonly style="width: 100%; height: 250px; padding: 12px; font-family: monospace; border-radius: 8px; border: 1px solid #ccc; resize: none; box-sizing: border-box;"></textarea>
+    </div>
+
+    <div id="tab-preview" class="tab-content" style="display:none; margin-top: 15px;">
+      <div id="preview-box"></div>
+    </div>
+  </div>
+
+  <script>
+    // data awal
+    let titleText = "GARANSI RESMI";
+    let defaultData = [
+      ["Kerusakan karena unitnya bukan karena pemakaian"],
+      ["Garansi hanya part tertentu"],
+      ["Garansi hanya berlaku untuk perbaikan part bukan ganti unit langsung"],
+      ["Proses 30 hari kerja"]
+    ];
+
+    // helper untuk membuat elemen baris input
+    function renderRows() {
+      const container = document.getElementById("container");
+      container.innerHTML = "";
+
+      const titleInput = document.createElement("div");
+      titleInput.className = "row";
+      // gunakan cssText (benar) bukan assign ke .style string
+      titleInput.style.cssText = "display: flex; gap: 10px; margin-bottom: 10px;";
+      titleInput.innerHTML = `
+        <input id="titleField" type="text" value="${escapeHtml(titleText)}" placeholder="Judul Tabel" oninput="updateTitle(this.value)" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+      `;
+      container.appendChild(titleInput);
+
+      defaultData.forEach((row, index) => {
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "row";
+        rowDiv.style.cssText = "display: flex; gap: 10px; margin-bottom: 10px;";
+        rowDiv.innerHTML = `
+          <input type="text" value="${escapeHtml(row[0])}" placeholder="Isi baris ${index + 1}" oninput="updateRow(${index},0,this.value)" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;">
+          <button class="btn-danger" data-index="${index}" style="padding: 10px 16px; cursor: pointer; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; transition: background 0.2s ease-in-out; background: #ff6b6b; color: white;">X</button>
+        `;
+        container.appendChild(rowDiv);
+      });
+
+      // attach handler untuk tombol delete (delegation)
+      container.querySelectorAll('.btn-danger').forEach(btn => {
+        btn.onclick = () => {
+          const i = Number(btn.getAttribute('data-index'));
+          deleteRow(i);
+        };
+      });
+    }
+
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return '';
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function updateTitle(value) { titleText = value; }
+    function updateRow(i, j, value) { defaultData[i][j] = value; }
+    function deleteRow(i) { defaultData.splice(i, 1); renderRows(); generateTable(); }
+    function addRow() { defaultData.push([""]); renderRows(); }
+
+    // generate HTML box garansi (inline styles sudah ada)
+    function generateTable() {
+      let html = `
+<div class="garansi-container" style="position: relative; display: flex; justify-content: center; margin-top: 50px; padding: 10px; width: fit-content;">
+  <div class="garansi-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto; width: 100%; height: 100%; background: #eaf2ff; border-radius: 20px; z-index: 0; box-shadow: 0 6px 15px rgba(76, 110, 245, 0.08);"></div>
+  <div class="garansi-title" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #e60012; color: #fff; font-weight: bold; font-size: 18px; text-align: center; padding: 10px 28px; border-radius: 30px; white-space: nowrap; z-index: 2; box-shadow: 0 3px 8px rgba(0,0,0,0.15);">${escapeHtml(titleText)}</div>
+  <div class="garansi-card" style="background: #ffffff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 480px; width: 100%; padding: 35px 25px 25px 25px; position: relative; z-index: 1;">
+    <div class="garansi-list" style="display: flex; flex-direction: column; gap: 15px; margin-top: 10px;">
+`;
+      defaultData.forEach((row, index) => {
+        html += `      <div class="garansi-item" style="display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: #333; line-height: 1.5;">
+        <div class="garansi-number" style="background: #ff0000; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-size: 14px;">${index + 1}</div>
+        <div style="color: black; font-weight: 500;">${escapeHtml(row[0])}</div>
+      </div>\n`;
+      });
+      html += `    </div>
+  </div>
+</div>`;
+
+      document.getElementById("result").value = html;
+      document.getElementById("preview-box").innerHTML = html;
+    }
+
+    // copy dengan fallback & handling clipboard permission
+    async function copyTable() {
+      const code = document.getElementById("result").value;
+      const btn = document.getElementById("copyBtn");
+      const originalText = btn.innerText;
+      const originalBg = btn.style.background || "";
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(code);
+        } else {
+          // fallback: textarea select
+          const ta = document.createElement('textarea');
+          ta.value = code;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        btn.innerText = "Copied!";
+        btn.style.background = "#37b24d";
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.background = originalBg || "#868e96";
+        }, 1500);
+      } catch (err) {
+        console.error("Copy failed", err);
+        alert("Gagal menyalin ke clipboard. Coba salin manual dari textarea di bawah.");
+      }
+    }
+
+    // switch tab (manipulasi style lewat cssText)
+    function switchTab(tab) {
+      const tabCodeBtn = document.getElementById('tabCodeBtn');
+      const tabPreviewBtn = document.getElementById('tabPreviewBtn');
+      const codeContent = document.getElementById('tab-code');
+      const previewContent = document.getElementById('tab-preview');
+
+      if (tab === 'code') {
+        tabCodeBtn.style.cssText = "padding: 10px 20px; cursor: pointer; font-weight: bold; color: #4c6ef5; border-bottom: 3px solid #4c6ef5;";
+        tabPreviewBtn.style.cssText = "padding: 10px 20px; cursor: pointer; font-weight: bold; color: #495057; border-bottom: 3px solid transparent;";
+        codeContent.style.display = "block";
+        previewContent.style.display = "none";
+      } else {
+        tabCodeBtn.style.cssText = "padding: 10px 20px; cursor: pointer; font-weight: bold; color: #495057; border-bottom: 3px solid transparent;";
+        tabPreviewBtn.style.cssText = "padding: 10px 20px; cursor: pointer; font-weight: bold; color: #4c6ef5; border-bottom: 3px solid #4c6ef5;";
+        codeContent.style.display = "none";
+        previewContent.style.display = "block";
+      }
+    }
+
+    // event listeners (tidak pakai inline onclick agar lebih stabil)
+    document.getElementById('genBtn').addEventListener('click', generateTable);
+    document.getElementById('copyBtn').addEventListener('click', copyTable);
+    document.getElementById('addBtn').addEventListener('click', () => { addRow(); generateTable(); });
+    document.getElementById('tabCodeBtn').addEventListener('click', () => switchTab('code'));
+    document.getElementById('tabPreviewBtn').addEventListener('click', () => switchTab('preview'));
+
+    // inisialisasi
+    renderRows();
+    generateTable();
+  </script>
+</body>
+</html>
