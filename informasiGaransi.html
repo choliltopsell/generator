@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TopSellBelanja – Clean Banner Generator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    h1 {
+      color: #0f172a;
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    .subtitle {
+      color: #475569;
+      margin: 8px 0 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .panel {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .panel:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+    
+    .panel-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #334155;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #d5dce5;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+    }
+    
+    .color-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .color-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid #d5dce5;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .preview-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px dashed #cbd5e1;
+    }
+    
+    .preview-title {
+      color: #64748b;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 180px;
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid #d5dce5;
+      font-family: monospace;
+      font-size: 14px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    
+    .copy-btn {
+      background: #10b981;
+    }
+    
+    .copy-btn:hover {
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #64748b;
+      font-size: 14px;
+    }
+    
+    .color-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .font-size-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+    }
+    
+    .range-value {
+      text-align: center;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 5px;
+    }
+    
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      align-items: center;
+      margin-top: 15px;
+    }
+    
+    .home-btn {
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    
+    .home-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+    
+    .home-btn:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TopSellBelanja – Clean Banner Generator</h1>
+      <p class="subtitle">Buat banner promosi yang menarik dengan mudah</p>
+    </header>
+    
+    <div class="content">
+      <div class="panel">
+        <h2 class="panel-title">Pengaturan Banner</h2>
+        
+        <div class="form-group">
+          <label for="inputTitle">Judul Banner</label>
+          <input id="inputTitle" type="text" value="FREE DOUBLE GARANSI" />
+        </div>
+        
+        <div class="form-group">
+          <label for="inputSub">Sub Judul</label>
+          <input id="inputSub" type="text" value="TopSell Protection + Garansi Resmi" />
+        </div>
+        
+        <div class="form-group">
+          <label>Pengaturan Warna</label>
+          <div class="color-group">
+            <div>
+              <label for="inputAccent">Warna Aksen</label>
+              <div class="color-input">
+                <input id="inputAccent" type="text" value="#06b6d4" />
+                <div id="colorPreview" class="color-preview" style="background-color: #06b6d4;"></div>
+              </div>
+            </div>
+            <div>
+              <label for="inputBg">Warna Latar</label>
+              <div class="color-input">
+                <input id="inputBg" type="text" value="#f8fafc" />
+                <div id="bgPreview" class="color-preview" style="background-color: #f8fafc;"></div>
+              </div>
+            </div>
+            <div>
+              <label for="inputShadow">Warna Bayangan</label>
+              <div class="color-input">
+                <input id="inputShadow" type="text" value="rgba(15,23,42,0.10)" />
+                <div id="shadowPreview" class="color-preview" style="background-color: rgba(15,23,42,0.10);"></div>
+              </div>
+            </div>
+            <div>
+              <label for="inputFontColor">Warna Font</label>
+              <div class="color-input">
+                <input id="inputFontColor" type="text" value="#0f172a" />
+                <div id="fontColorPreview" class="color-preview" style="background-color: #0f172a;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Pengaturan Ukuran Font</label>
+          <div class="font-size-group">
+            <div>
+              <label for="fontSizeTitle">Ukuran Font Judul (px)</label>
+              <input id="fontSizeTitle" type="range" min="12" max="36" value="18" />
+              <div id="fontSizeTitleValue" class="range-value">18px</div>
+            </div>
+            <div>
+              <label for="fontSizeSub">Ukuran Font Sub (px)</label>
+              <input id="fontSizeSub" type="range" min="10" max="24" value="14" />
+              <div id="fontSizeSubValue" class="range-value">14px</div>
+            </div>
+          </div>
+        </div>
+        
+        <button id="btnGenerate" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9v-4m0 4v-4m0 4v-4m0 4v-4m-9-5a9 9 0 0 1 9-9"></path>
+          </svg>
+          Generate Banner
+        </button>
+      </div>
+      
+      <div class="panel">
+        <h2 class="panel-title">Preview Banner</h2>
+        <div class="preview-container">
+          <div class="preview-title">Banner akan muncul di sini</div>
+          <div id="preview"></div>
+        </div>
+
+        <div style="grid-column: span 2; margin-top: 25px;">
+        <h2 class="panel-title">Kode HTML yang Dihasilkan</h2>
+        <textarea id="output"></textarea>
+        <div class="button-group">
+          <a href="index.html" class="home-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Kembali ke Beranda
+          </a>
+          <button id="btnCopy" class="btn copy-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Salin Kode
+          </button>
+        </div>
+      </div>
+      </div>
+      
+      
+    </div>
+    
+    <div class="footer">
+      &copy; 2023 TopSellBelanja - Clean Banner Generator
+    </div>
+  </div>
+
+  <script>
+    function createBannerHTML(title, subtitle, accent, bgColor, shadowColor, fontColor, fontSizeTitle, fontSizeSub) {
+      return `
+<div style="
+  background: ${bgColor};
+  border-radius: 12px;
+  box-shadow: 0 5px 20px ${shadowColor};
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 430px;
+  border-left: 5px solid ${accent};
+">
+  <div style="
+    font-size: ${fontSizeTitle}px;
+    font-weight: 700;
+    color: ${fontColor};
+    margin: 0;
+  ">${title}</div>
+  <div style="
+    font-size: ${fontSizeSub}px;
+    font-weight: 500;
+    color: #475569;
+    margin: 0;
+  ">${subtitle}</div>
+</div>`;
+    }
+
+    document.getElementById("btnGenerate").addEventListener("click", () => {
+      const title = document.getElementById("inputTitle").value;
+      const sub = document.getElementById("inputSub").value;
+      const accent = document.getElementById("inputAccent").value;
+      const bgColor = document.getElementById("inputBg").value;
+      const shadowColor = document.getElementById("inputShadow").value;
+      const fontColor = document.getElementById("inputFontColor").value;
+      const fontSizeTitle = document.getElementById("fontSizeTitle").value;
+      const fontSizeSub = document.getElementById("fontSizeSub").value;
+
+      const html = createBannerHTML(title, sub, accent, bgColor, shadowColor, fontColor, fontSizeTitle, fontSizeSub);
+
+      // Tampilkan preview
+      document.getElementById("preview").innerHTML = html;
+
+      // Masukkan ke textarea
+      document.getElementById("output").value = html;
+      
+      // Update color preview
+      document.getElementById("colorPreview").style.backgroundColor = accent;
+      document.getElementById("bgPreview").style.backgroundColor = bgColor;
+      document.getElementById("shadowPreview").style.backgroundColor = shadowColor;
+      document.getElementById("fontColorPreview").style.backgroundColor = fontColor;
+    });
+    
+    // Event listeners untuk input warna
+    document.getElementById("inputAccent").addEventListener("input", function() {
+      document.getElementById("colorPreview").style.backgroundColor = this.value;
+    });
+    
+    document.getElementById("inputBg").addEventListener("input", function() {
+      document.getElementById("bgPreview").style.backgroundColor = this.value;
+    });
+    
+    document.getElementById("inputShadow").addEventListener("input", function() {
+      document.getElementById("shadowPreview").style.backgroundColor = this.value;
+    });
+    
+    document.getElementById("inputFontColor").addEventListener("input", function() {
+      document.getElementById("fontColorPreview").style.backgroundColor = this.value;
+    });
+    
+    // Event listeners untuk slider ukuran font
+    document.getElementById("fontSizeTitle").addEventListener("input", function() {
+      document.getElementById("fontSizeTitleValue").textContent = this.value + "px";
+    });
+    
+    document.getElementById("fontSizeSub").addEventListener("input", function() {
+      document.getElementById("fontSizeSubValue").textContent = this.value + "px";
+    });
+    
+    document.getElementById("btnCopy").addEventListener("click", function() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      
+      // Ubah teks tombol sementara
+      const originalText = this.innerHTML;
+      this.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Tersalin!
+      `;
+      
+      setTimeout(() => {
+        this.innerHTML = originalText;
+      }, 2000);
+    });
+    
+    // Generate banner saat halaman pertama kali dimuat
+    document.getElementById("btnGenerate").click();
+  </script>
+</body>
+</html>
