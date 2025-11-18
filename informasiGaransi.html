@@ -243,7 +243,6 @@
       border-radius: 3px;
       background: #e2e8f0;
       outline: none;
-      /* -webkit-appearance: none; */
     }
     
     .slider::-webkit-slider-thumb {
@@ -424,6 +423,76 @@
     .home-btn:active {
       transform: translateY(0);
     }
+    
+    /* New styles for positioning controls */
+    .position-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .radio-label input {
+      margin: 0;
+    }
+    
+    .width-group {
+      margin-top: 15px;
+    }
+    
+    .width-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    
+    .width-option {
+      flex: 1;
+      min-width: 80px;
+    }
+    
+    .width-option label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      text-align: center;
+    }
+    
+    .width-option input {
+      display: none;
+    }
+    
+    .width-option input:checked + label {
+      background: #06b6d4;
+      color: white;
+    }
+    
+    .alignment-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
   </style>
 </head>
 <body>
@@ -444,6 +513,85 @@
         <div class="form-group">
           <label for="inputSub">Sub Judul</label>
           <input id="inputSub" type="text" value="TopSell Protection + Garansi Resmi" />
+        </div>
+        
+        <!-- New positioning controls -->
+        <div class="form-group">
+          <label>Posisi Teks</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="textAlign" value="center" checked>
+              <span>Tengah</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="textAlign" value="left">
+              <span>Kiri</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="textAlign" value="right">
+              <span>Kanan</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="alignment-group">
+          <div class="form-group">
+            <label>Posisi Box</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="boxPosition" value="center" checked>
+                <span>Tengah</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="boxPosition" value="left">
+                <span>Kiri</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="boxPosition" value="right">
+                <span>Kanan</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Alignment Box</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="boxAlign" value="flex-start" checked>
+                <span>Kiri</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="boxAlign" value="center">
+                <span>Tengah</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="boxAlign" value="flex-end">
+                <span>Kanan</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Lebar Box</label>
+          <div class="width-options">
+            <div class="width-option">
+              <input type="radio" id="width90" name="boxWidth" value="90%">
+              <label for="width90">90%</label>
+            </div>
+            <div class="width-option">
+              <input type="radio" id="width100" name="boxWidth" value="100%" checked>
+              <label for="width100">100%</label>
+            </div>
+            <div class="width-option">
+              <input type="radio" id="widthFit" name="boxWidth" value="fit-content">
+              <label for="widthFit">Fit Content</label>
+            </div>
+            <div class="width-option">
+              <input type="radio" id="widthAuto" name="boxWidth" value="auto">
+              <label for="widthAuto">Auto</label>
+            </div>
+          </div>
         </div>
         
         <div class="form-group">
@@ -798,9 +946,19 @@
     createColorPalette('shadowPalette', shadowColors);
     createColorPalette('fontPalette', fontColors);
 
-    function createBannerHTML(title, subtitle, accent, bgColor, shadowColor, fontColor, fontSizeTitle, fontSizeSub) {
+    function createBannerHTML(title, subtitle, accent, bgColor, shadowColor, fontColor, fontSizeTitle, fontSizeSub, textAlign, boxPosition, boxAlign, boxWidth) {
+      // Tentukan alignment untuk teks
+      let textAlignStyle = "center";
+      if (textAlign === "left") textAlignStyle = "left";
+      else if (textAlign === "right") textAlignStyle = "right";
+      
+      // Tentukan alignment untuk box
+      let boxAlignStyle = "center";
+      if (boxAlign === "flex-start") boxAlignStyle = "flex-start";
+      else if (boxAlign === "flex-end") boxAlignStyle = "flex-end";
+      
       return `
-<div style="padding: 15px; box-sizing: border-box; justify-content:center; width: 100%; margin: 0 auto;">
+<div style="padding: 15px; box-sizing: border-box; display: flex; justify-content: ${boxAlignStyle}; width: 100%; margin: 0 auto;">
 <div style="
   background: ${bgColor};
   border-radius: 12px;
@@ -810,21 +968,25 @@
   box-sizing: border-box;
   flex-direction: column;
   gap: 4px;
-  width: 100%;
+  width: ${boxWidth};
   border-left: 5px solid ${accent};
 ">
+<div style="width: fit-content;">
   <div style="
     font-size: ${fontSizeTitle}px;
     font-weight: 700;
     color: ${fontColor};
     margin: 0;
+    text-align: ${textAlignStyle};
   ">${title}</div>
   <div style="
     font-size: ${fontSizeSub}px;
     font-weight: 500;
     color: #475569;
     margin: 0;
+    text-align: ${textAlignStyle};
   ">${subtitle}</div>
+  </div>
 </div>
 </div>`;
     }
@@ -838,8 +1000,20 @@
       const fontColor = document.getElementById("inputFontColor").value;
       const fontSizeTitle = document.getElementById("fontSizeTitle").value;
       const fontSizeSub = document.getElementById("fontSizeSub").value;
+      
+      // Get text alignment
+      const textAlign = document.querySelector('input[name="textAlign"]:checked').value;
+      
+      // Get box position
+      const boxPosition = document.querySelector('input[name="boxPosition"]:checked').value;
+      
+      // Get box alignment
+      const boxAlign = document.querySelector('input[name="boxAlign"]:checked').value;
+      
+      // Get box width
+      const boxWidth = document.querySelector('input[name="boxWidth"]:checked').value;
 
-      const html = createBannerHTML(title, sub, accent, bgColor, shadowColor, fontColor, fontSizeTitle, fontSizeSub);
+      const html = createBannerHTML(title, sub, accent, bgColor, shadowColor, fontColor, fontSizeTitle, fontSizeSub, textAlign, boxPosition, boxAlign, boxWidth);
 
       // Tampilkan preview
       document.getElementById("preview").innerHTML = html;
