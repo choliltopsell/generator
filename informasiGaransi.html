@@ -554,7 +554,7 @@
           </div>
           
           <div class="form-group">
-            <label>Alignment Box</label>
+            <label>Alignment Box text</label>
             <div class="radio-group">
               <label class="radio-label">
                 <input type="radio" name="boxAlign" value="flex-start" checked>
@@ -956,9 +956,14 @@
       let boxAlignStyle = "center";
       if (boxAlign === "flex-start") boxAlignStyle = "flex-start";
       else if (boxAlign === "flex-end") boxAlignStyle = "flex-end";
+
+      // Tentukan alignment untuk box
+      let boxPositionStyle= "center";
+      if (boxPosition === "flex-start") boxPositionStyle= "flex-start";
+      else if (boxPosition === "flex-end") boxPositionStyle= "flex-end";
       
       return `
-<div style="padding: 15px; box-sizing: border-box; display: flex; justify-content: center; width: 100%; margin: 0 auto;">
+<div style="padding: 15px; box-sizing: border-box; display: flex; justify-content: ${boxPosition}; width: 100%; margin: 0 auto;">
 <div style="
   background: ${bgColor};
   border-radius: 12px;
