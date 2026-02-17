@@ -68,6 +68,12 @@ body{
 }
 .field textarea{min-height:90px;resize:none}
 
+.helper{
+  font-size:12px;
+  color:#64748b;
+  margin-top:4px;
+}
+
 .button{
   width:100%;
   margin-top:14px;
@@ -81,22 +87,8 @@ body{
   cursor:pointer;
 }
 
-.button2{
-  width:100%;
-  margin-top:14px;
-  background:black;
-  color:white;
-  border:none;
-  border-radius:12px;
-  padding:12px;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-}
-
 .button.secondary{
   background:#0f172a;
-  margin-top:10px;
 }
 
 .result{
@@ -146,8 +138,16 @@ body{
     </div>
 
     <div class="field">
+      <label>Nama Produk</label>
+      <input type="text" id="productName" placeholder="iPhone 15 Pro">
+    </div>
+
+    <div class="field">
       <label>Pesan</label>
       <textarea id="waMessage"></textarea>
+      <div class="helper">
+        Gunakan <b>{{nama_produk}}</b> untuk posisi nama produk (bebas di mana saja)
+      </div>
     </div>
 
     <button class="button" onclick="generateLink()">Generate Link</button>
@@ -157,14 +157,12 @@ body{
       <a id="waLink" href="#" target="_blank"></a>
       <button class="button secondary" onclick="copyLink()">Copy Link</button>
     </div>
-
-    <a href="index.html"><button class="button2">Kembali</button></a>
   </div>
 
   <!-- PREVIEW TAB -->
   <div id="previewTab" class="hidden">
     <div class="preview-box" id="previewMessage"></div>
-    <button class="button" id="previewButton" target="_blank">
+    <button class="button" id="previewButton">
       Buka WhatsApp
     </button>
   </div>
@@ -173,34 +171,42 @@ body{
 
 <script>
 const DEFAULT_NUMBER = "6282119227871";
-const DEFAULT_MESSAGE = "Halo kak, saya mau trade in di topsell";
+const DEFAULT_PRODUCT = "iPhone";
+const DEFAULT_MESSAGE = "Saya tertarik untuk kredit {{nama_produk}} di Topsell Bhayangkara";
 
 const numberInput = document.getElementById('waNumber');
+const productInput = document.getElementById('productName');
 const messageInput = document.getElementById('waMessage');
+
 const resultBox = document.getElementById('resultBox');
 const waLink = document.getElementById('waLink');
 const previewMessage = document.getElementById('previewMessage');
 const previewButton = document.getElementById('previewButton');
 
-// Load default / storage
+/* Load storage / default */
 numberInput.value = localStorage.getItem('wa_number') || DEFAULT_NUMBER;
+productInput.value = localStorage.getItem('wa_product') || DEFAULT_PRODUCT;
 messageInput.value = localStorage.getItem('wa_message') || DEFAULT_MESSAGE;
 
-// Auto save
-numberInput.addEventListener('input', () => {
-  localStorage.setItem('wa_number', numberInput.value);
-});
-messageInput.addEventListener('input', () => {
-  localStorage.setItem('wa_message', messageInput.value);
+/* Auto save */
+[numberInput, productInput, messageInput].forEach(el=>{
+  el.addEventListener('input', ()=>{
+    localStorage.setItem('wa_number', numberInput.value);
+    localStorage.setItem('wa_product', productInput.value);
+    localStorage.setItem('wa_message', messageInput.value);
+  });
 });
 
-// Generate Link
+/* Generate Link */
 function generateLink(){
   let number = numberInput.value.trim() || DEFAULT_NUMBER;
-  let message = messageInput.value.trim() || DEFAULT_MESSAGE;
+  let product = productInput.value.trim() || DEFAULT_PRODUCT;
+  let messageTemplate = messageInput.value.trim() || DEFAULT_MESSAGE;
 
   number = number.replace(/[^0-9]/g,'');
-  const encodedMessage = encodeURIComponent(message);
+
+  const finalMessage = messageTemplate.replaceAll('{{nama_produk}}', product);
+  const encodedMessage = encodeURIComponent(finalMessage);
 
   const link = `https://wa.me/${number}?text=${encodedMessage}`;
 
@@ -208,30 +214,30 @@ function generateLink(){
   waLink.textContent = link;
   resultBox.classList.remove('hidden');
 
-  previewMessage.textContent = message;
+  previewMessage.textContent = finalMessage;
   previewButton.onclick = () => window.open(link, '_blank');
 
   localStorage.setItem('wa_number', number);
-  localStorage.setItem('wa_message', message);
+  localStorage.setItem('wa_product', product);
+  localStorage.setItem('wa_message', messageTemplate);
 }
 
-// Copy link
+/* Copy link */
 function copyLink(){
   navigator.clipboard.writeText(waLink.href);
   alert("Link berhasil disalin!");
 }
 
-// Tab Switch
+/* Tabs */
 function switchTab(tab){
   document.getElementById('formTab').classList.add('hidden');
   document.getElementById('previewTab').classList.add('hidden');
+  document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active'));
 
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-  if(tab === 'form'){
+  if(tab==='form'){
     document.getElementById('formTab').classList.remove('hidden');
     document.querySelectorAll('.tab-btn')[0].classList.add('active');
-  } else {
+  }else{
     document.getElementById('previewTab').classList.remove('hidden');
     document.querySelectorAll('.tab-btn')[1].classList.add('active');
     generateLink();
