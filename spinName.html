@@ -620,17 +620,28 @@
         `)
         .join('');
 
+      const itemHeight = 120;
+
+      const finalPosition =
+        (animationPool.length - 1) * itemHeight;
+
+      // Hard reset animation state so subsequent spins animate
+      // exactly like the first spin in all browsers.
+      slotTrack.style.transition = 'none';
       slotTrack.style.transform = 'translateY(0px)';
+      void slotTrack.offsetHeight;
 
       requestAnimationFrame(() => {
 
-        const itemHeight = 120;
+        requestAnimationFrame(() => {
 
-        const finalPosition =
-          (animationPool.length - 1) * itemHeight;
+          slotTrack.style.transition =
+            'transform 5s cubic-bezier(0.15, 0.9, 0.1, 1)';
 
-        slotTrack.style.transform =
-          `translateY(-${finalPosition}px)`;
+          slotTrack.style.transform =
+            `translateY(-${finalPosition}px)`;
+
+        });
 
       });
 
