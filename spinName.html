@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Random Picker</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,0.15), transparent 30%),
+        radial-gradient(circle at top right, rgba(168,85,247,0.15), transparent 30%),
+        linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59,130,246,0.18), transparent 70%);
+      filter: blur(30px);
+      z-index: -1;
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .slot {
+      height: 120px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .slot::before,
+    .slot::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 35px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .slot::before {
+      top: 0;
+      background: linear-gradient(to bottom, rgba(2,6,23,1), transparent);
+    }
+
+    .slot::after {
+      bottom: 0;
+      background: linear-gradient(to top, rgba(2,6,23,1), transparent);
+    }
+
+    .slot-track {
+      transition: transform 5s cubic-bezier(0.15, 0.9, 0.1, 1);
+    }
+
+    .slot-item {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(22px, 4vw, 52px);
+      font-weight: 900;
+      color: white;
+      padding: 0 30px;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .shine {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.18),
+        transparent
+      );
+      animation: shine 4s infinite;
+    }
+
+    @keyframes shine {
+      100% {
+        left: 120%;
+      }
+    }
+
+    .winner-card {
+      animation: winnerReveal 0.8s cubic-bezier(.2,.9,.2,1);
+    }
+
+    @keyframes winnerReveal {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .pulse-ring {
+      animation: pulseRing 2s infinite;
+    }
+
+    @keyframes pulseRing {
+      0% {
+        box-shadow: 0 0 0 0 rgba(59,130,246,0.6);
+      }
+
+      70% {
+        box-shadow: 0 0 0 30px rgba(59,130,246,0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(59,130,246,0);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="text-white">
+
+  <div class="hero-glow top-[-200px] left-[-100px]"></div>
+  <div class="hero-glow bottom-[-200px] right-[-100px]"></div>
+
+  <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+
+    <div class="text-center mb-10 md:mb-14 floating">
+      <div class="inline-flex items-center gap-2 glass px-5 py-2 rounded-full text-sm text-sky-300 mb-5">
+        ✨ Enterprise Grade Lucky Draw System
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-black leading-tight mb-5">
+        Premium
+        <span class="bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">
+          Random Picker
+        </span>
+      </h1>
+
+      <p class="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
+        Designed for large scale giveaways, live events, marketplace campaigns,
+        and premium customer experiences.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-[420px_1fr] gap-6">
+
+      <div class="glass rounded-[32px] p-6 md:p-8 h-fit">
+
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold">
+              Upload Participants
+            </h2>
+
+            <p class="text-slate-400 text-sm mt-1">
+              Supports tens of thousands of entries
+            </p>
+          </div>
+
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 flex items-center justify-center text-2xl">
+            🎯
+          </div>
+        </div>
+
+        <label class="block mb-4">
+          <div class="border border-dashed border-slate-700 hover:border-sky-400 transition rounded-3xl p-8 text-center cursor-pointer bg-slate-950/50">
+
+            <div class="text-5xl mb-4">
+              📂
+            </div>
+
+            <div class="font-semibold text-lg mb-1">
+              Upload CSV File
+            </div>
+
+            <div class="text-slate-400 text-sm">
+              Drag & drop or click to upload
+            </div>
+
+            <input
+              type="file"
+              id="csvFile"
+              accept=".csv"
+              class="hidden"
+            />
+          </div>
+        </label>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+
+          <div class="glass rounded-2xl p-5 text-center">
+            <div class="text-slate-400 text-sm mb-2">
+              Participants
+            </div>
+
+            <div id="totalParticipants" class="text-3xl font-black text-sky-400">
+              0
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-5 text-center">
+            <div class="text-slate-400 text-sm mb-2">
+              Winners
+            </div>
+
+            <div id="winnerCount" class="text-3xl font-black text-violet-400">
+              0
+            </div>
+          </div>
+
+        </div>
+
+        <button
+          id="toggleRemove"
+          class="w-full glass rounded-2xl py-4 font-semibold mb-4 hover:scale-[1.01] transition"
+        >
+          ✅ Auto Remove Winner: ON
+        </button>
+
+        <button
+          id="pickButton"
+          class="w-full pulse-ring shine bg-gradient-to-r from-sky-500 to-violet-500 rounded-3xl py-5 font-black text-xl hover:scale-[1.02] active:scale-[0.99] transition"
+        >
+          🎰 PICK WINNER
+        </button>
+        <a href="index.html">
+            <button 
+          class="w-full mt-5 pulse-ring shine bg-gray-700 rounded-3xl py-5 font-black text-xl hover:scale-[1.02] active:scale-[0.99] transition"
+        >
+          Kembali
+        </button>
+        </a>
+        <div class="mt-8 text-sm text-slate-400 leading-relaxed">
+          <div class="mb-2 font-semibold text-white">
+            CSV Example
+          </div>
+
+          Budi - 08123456789<br>
+          Andi - 081298765432<br>
+          Siti - 082233445566
+        </div>
+
+      </div>
+
+      <div class="space-y-6">
+
+        <div class="glass rounded-[32px] p-6 md:p-10">
+
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-slate-400 text-sm mb-2">
+                LIVE DRAW RESULT
+              </div>
+
+              <h2 class="text-3xl md:text-4xl font-black">
+                Winner Selection
+              </h2>
+            </div>
+
+            <div class="hidden md:flex items-center gap-2 text-emerald-400 glass px-4 py-2 rounded-full text-sm">
+              <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+              LIVE
+            </div>
+          </div>
+
+          <div class="slot mb-6">
+            <div id="slotTrack" class="slot-track"></div>
+          </div>
+
+          <div id="winnerCard" class="hidden glass rounded-3xl p-8 winner-card text-center">
+
+            <div class="text-slate-400 text-sm tracking-[0.3em] mb-3">
+              SELECTED WINNER
+            </div>
+
+            <div id="finalWinner" class="text-3xl md:text-5xl font-black leading-tight break-words bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">
+              -
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="glass rounded-[32px] p-6 md:p-8">
+
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-black">
+                Winner History
+              </h2>
+
+              <p class="text-slate-400 text-sm mt-1">
+                Real-time selected participants
+              </p>
+            </div>
+
+            <div class="text-slate-400 text-sm">
+              Auto saved session
+            </div>
+          </div>
+
+          <div id="historyList" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+
+            <div class="glass rounded-2xl p-5 text-center text-slate-500">
+              No winners selected yet
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    let participants = [];
+    let winners = [];
+    let autoRemove = true;
+    let isRolling = false;
+
+    const csvFile = document.getElementById('csvFile');
+    const totalParticipants = document.getElementById('totalParticipants');
+    const winnerCount = document.getElementById('winnerCount');
+    const toggleRemove = document.getElementById('toggleRemove');
+    const pickButton = document.getElementById('pickButton');
+    const slotTrack = document.getElementById('slotTrack');
+    const finalWinner = document.getElementById('finalWinner');
+    const historyList = document.getElementById('historyList');
+    const winnerCard = document.getElementById('winnerCard');
+
+    document.querySelector('label').addEventListener('click', () => {
+      csvFile.click();
+    });
+
+    csvFile.addEventListener('change', handleCSVUpload);
+
+    function handleCSVUpload(event) {
+      const file = event.target.files[0];
+
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+
+        const rows = e.target.result
+          .split(/\r?\n/)
+          .map(row => row.trim())
+          .filter(Boolean);
+
+        participants = rows;
+
+        totalParticipants.innerText = participants.length.toLocaleString();
+
+        showToast(`${participants.length.toLocaleString()} participants loaded successfully 🚀`);
+      }
+
+      reader.readAsText(file);
+    }
+
+    toggleRemove.addEventListener('click', () => {
+
+      autoRemove = !autoRemove;
+
+      toggleRemove.innerHTML = autoRemove
+        ? '✅ Auto Remove Winner: ON'
+        : '❌ Auto Remove Winner: OFF';
+
+    });
+
+    pickButton.addEventListener('click', async () => {
+
+      if (participants.length === 0) {
+        showToast('Upload participants first 📂');
+        return;
+      }
+
+      if (isRolling) return;
+
+      isRolling = true;
+
+      pickButton.innerHTML = '🎲 DRAWING...';
+
+      winnerCard.classList.add('hidden');
+
+      const animationPool = [];
+
+      for (let i = 0; i < 60; i++) {
+        animationPool.push(
+          participants[Math.floor(Math.random() * participants.length)]
+        );
+      }
+
+      const selectedIndex = Math.floor(Math.random() * participants.length);
+      const selectedWinner = participants[selectedIndex];
+
+      animationPool.push(selectedWinner);
+
+      slotTrack.innerHTML = animationPool
+        .map(item => `
+          <div class="slot-item">
+            ${escapeHtml(item)}
+          </div>
+        `)
+        .join('');
+
+      slotTrack.style.transform = 'translateY(0px)';
+
+      requestAnimationFrame(() => {
+
+        const itemHeight = 120;
+        const finalPosition = (animationPool.length - 1) * itemHeight;
+
+        slotTrack.style.transform = `translateY(-${finalPosition}px)`;
+
+      });
+
+      setTimeout(() => {
+
+        finalWinner.innerText = selectedWinner;
+
+        winnerCard.classList.remove('hidden');
+
+        winners.unshift(selectedWinner);
+
+        renderHistory();
+
+        if (autoRemove) {
+          participants.splice(selectedIndex, 1);
+          totalParticipants.innerText = participants.length.toLocaleString();
+        }
+
+        winnerCount.innerText = winners.length.toLocaleString();
+
+        pickButton.innerHTML = '🎰 PICK WINNER';
+
+        isRolling = false;
+
+      }, 5200);
+
+    });
+
+    function renderHistory() {
+
+      historyList.innerHTML = '';
+
+      winners.forEach((winner, index) => {
+
+        const item = document.createElement('div');
+
+        item.className = 'glass rounded-2xl p-5 flex items-center justify-between gap-4';
+
+        item.innerHTML = `
+          <div class="flex items-center gap-4 min-w-0">
+
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 flex items-center justify-center font-black shrink-0">
+              ${index + 1}
+            </div>
+
+            <div class="truncate font-semibold text-lg">
+              ${escapeHtml(winner)}
+            </div>
+
+          </div>
+
+          <div class="text-emerald-400 text-sm shrink-0">
+            Selected
+          </div>
+        `;
+
+        historyList.appendChild(item);
+
+      });
+
+    }
+
+    function showToast(message) {
+
+      const toast = document.createElement('div');
+
+      toast.className = `
+        fixed bottom-6 right-6
+        glass px-6 py-4 rounded-2xl
+        text-white z-50
+        animate-bounce
+      `;
+
+      toast.innerText = message;
+
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+  </script>
+
+</body>
+</html>
