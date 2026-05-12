@@ -2,16 +2,19 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Premium Random Picker</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+
     * {
       font-family: 'Inter', sans-serif;
     }
@@ -29,6 +32,7 @@
       background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(18px);
       border: 1px solid rgba(255,255,255,0.08);
+
       box-shadow:
         0 10px 40px rgba(0,0,0,0.35),
         inset 0 1px 0 rgba(255,255,255,0.05);
@@ -48,9 +52,19 @@
     }
 
     @keyframes floating {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-      100% { transform: translateY(0px); }
+
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+
     }
 
     .slot {
@@ -58,46 +72,91 @@
       overflow: hidden;
       position: relative;
       border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.05),
+          rgba(255,255,255,0.02)
+        );
+
       border: 1px solid rgba(255,255,255,0.08);
     }
 
     .slot::before,
     .slot::after {
+
       content: '';
+
       position: absolute;
+
       left: 0;
+
       width: 100%;
+
       height: 35px;
+
       z-index: 2;
+
       pointer-events: none;
+
     }
 
     .slot::before {
+
       top: 0;
-      background: linear-gradient(to bottom, rgba(2,6,23,1), transparent);
+
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(2,6,23,1),
+          transparent
+        );
+
     }
 
     .slot::after {
+
       bottom: 0;
-      background: linear-gradient(to top, rgba(2,6,23,1), transparent);
+
+      background:
+        linear-gradient(
+          to top,
+          rgba(2,6,23,1),
+          transparent
+        );
+
     }
 
     .slot-track {
-      transition: transform 5s cubic-bezier(0.15, 0.9, 0.1, 1);
+
+      transition:
+        transform 5s cubic-bezier(0.15, 0.9, 0.1, 1);
+
     }
 
     .slot-item {
+
       height: 120px;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       font-size: clamp(22px, 4vw, 52px);
+
       font-weight: 900;
+
       color: white;
+
       padding: 0 30px;
+
       text-align: center;
+
       word-break: break-word;
+
     }
 
     .shine {
@@ -106,25 +165,37 @@
     }
 
     .shine::before {
+
       content: '';
+
       position: absolute;
+
       top: 0;
+
       left: -100%;
+
       width: 100%;
+
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255,255,255,0.18),
-        transparent
-      );
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,0.18),
+          transparent
+        );
+
       animation: shine 4s infinite;
+
     }
 
     @keyframes shine {
+
       100% {
         left: 120%;
       }
+
     }
 
     .winner-card {
@@ -132,6 +203,7 @@
     }
 
     @keyframes winnerReveal {
+
       0% {
         transform: scale(0.8);
         opacity: 0;
@@ -141,6 +213,7 @@
         transform: scale(1);
         opacity: 1;
       }
+
     }
 
     .pulse-ring {
@@ -148,6 +221,7 @@
     }
 
     @keyframes pulseRing {
+
       0% {
         box-shadow: 0 0 0 0 rgba(59,130,246,0.6);
       }
@@ -159,6 +233,7 @@
       100% {
         box-shadow: 0 0 0 0 rgba(59,130,246,0);
       }
+
     }
 
     ::-webkit-scrollbar {
@@ -169,8 +244,11 @@
       background: rgba(255,255,255,0.1);
       border-radius: 999px;
     }
+
   </style>
+
 </head>
+
 <body class="text-white">
 
   <div class="hero-glow top-[-200px] left-[-100px]"></div>
@@ -179,29 +257,41 @@
   <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
 
     <div class="text-center mb-10 md:mb-14 floating">
+
       <div class="inline-flex items-center gap-2 glass px-5 py-2 rounded-full text-sm text-sky-300 mb-5">
         ✨ Enterprise Grade Lucky Draw System
       </div>
 
       <h1 class="text-5xl md:text-7xl font-black leading-tight mb-5">
+
         Premium
+
         <span class="bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">
           Random Picker
         </span>
+
       </h1>
 
       <p class="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
-        Designed for large scale giveaways, live events, marketplace campaigns,
+
+        Designed for large scale giveaways,
+        live events, marketplace campaigns,
         and premium customer experiences.
+
       </p>
+
     </div>
 
     <div class="grid lg:grid-cols-[420px_1fr] gap-6">
 
+      <!-- LEFT -->
+
       <div class="glass rounded-[32px] p-6 md:p-8 h-fit">
 
         <div class="flex items-center justify-between mb-8">
+
           <div>
+
             <h2 class="text-2xl font-bold">
               Upload Participants
             </h2>
@@ -209,14 +299,17 @@
             <p class="text-slate-400 text-sm mt-1">
               Supports tens of thousands of entries
             </p>
+
           </div>
 
           <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 flex items-center justify-center text-2xl">
             🎯
           </div>
+
         </div>
 
         <label class="block mb-4">
+
           <div class="border border-dashed border-slate-700 hover:border-sky-400 transition rounded-3xl p-8 text-center cursor-pointer bg-slate-950/50">
 
             <div class="text-5xl mb-4">
@@ -237,12 +330,15 @@
               accept=".csv"
               class="hidden"
             />
+
           </div>
+
         </label>
 
         <div class="grid grid-cols-2 gap-4 mb-4">
 
           <div class="glass rounded-2xl p-5 text-center">
+
             <div class="text-slate-400 text-sm mb-2">
               Participants
             </div>
@@ -250,9 +346,11 @@
             <div id="totalParticipants" class="text-3xl font-black text-sky-400">
               0
             </div>
+
           </div>
 
           <div class="glass rounded-2xl p-5 text-center">
+
             <div class="text-slate-400 text-sm mb-2">
               Winners
             </div>
@@ -260,6 +358,7 @@
             <div id="winnerCount" class="text-3xl font-black text-violet-400">
               0
             </div>
+
           </div>
 
         </div>
@@ -277,31 +376,38 @@
         >
           🎰 PICK WINNER
         </button>
-        <a href="index.html">
-            <button 
-          class="w-full mt-5 pulse-ring shine bg-gray-700 rounded-3xl py-5 font-black text-xl hover:scale-[1.02] active:scale-[0.99] transition"
-        >
-          Kembali
-        </button>
-        </a>
-        <div class="mt-8 text-sm text-slate-400 leading-relaxed">
-          <div class="mb-2 font-semibold text-white">
-            CSV Example
-          </div>
 
-          Budi - 08123456789<br>
-          Andi - 081298765432<br>
-          Siti - 082233445566
-        </div>
+        <!-- TOMBOL KEMBALI -->
+
+        <a href="index.html">
+
+          <button
+            class="w-full mt-5 shine bg-gray-700 hover:bg-gray-600 rounded-3xl py-5 font-black text-xl hover:scale-[1.02] active:scale-[0.99] transition"
+          >
+            ⬅ Kembali
+          </button>
+
+        </a>
+
+        <button
+          onclick="clearAllData()"
+          class="w-full mt-4 bg-red-500/20 border border-red-500/30 text-red-300 rounded-2xl py-4 font-bold hover:bg-red-500/30 transition"
+        >
+          🗑 Clear Session
+        </button>
 
       </div>
+
+      <!-- RIGHT -->
 
       <div class="space-y-6">
 
         <div class="glass rounded-[32px] p-6 md:p-10">
 
           <div class="flex items-center justify-between mb-6">
+
             <div>
+
               <div class="text-slate-400 text-sm mb-2">
                 LIVE DRAW RESULT
               </div>
@@ -309,12 +415,17 @@
               <h2 class="text-3xl md:text-4xl font-black">
                 Winner Selection
               </h2>
+
             </div>
 
             <div class="hidden md:flex items-center gap-2 text-emerald-400 glass px-4 py-2 rounded-full text-sm">
+
               <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+
               LIVE
+
             </div>
+
           </div>
 
           <div class="slot mb-6">
@@ -338,7 +449,9 @@
         <div class="glass rounded-[32px] p-6 md:p-8">
 
           <div class="flex items-center justify-between mb-6">
+
             <div>
+
               <h2 class="text-2xl font-black">
                 Winner History
               </h2>
@@ -346,11 +459,9 @@
               <p class="text-slate-400 text-sm mt-1">
                 Real-time selected participants
               </p>
+
             </div>
 
-            <div class="text-slate-400 text-sm">
-              Auto saved session
-            </div>
           </div>
 
           <div id="historyList" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
@@ -371,28 +482,57 @@
 
   <script>
 
-    let participants = [];
-    let winners = [];
-    let autoRemove = true;
+    let participants =
+      JSON.parse(localStorage.getItem('participants')) || [];
+
+    let winners =
+      JSON.parse(localStorage.getItem('winners')) || [];
+
+    let autoRemove =
+      JSON.parse(localStorage.getItem('autoRemove'));
+
+    if (autoRemove === null) {
+      autoRemove = true;
+    }
+
     let isRolling = false;
 
-    const csvFile = document.getElementById('csvFile');
-    const totalParticipants = document.getElementById('totalParticipants');
-    const winnerCount = document.getElementById('winnerCount');
-    const toggleRemove = document.getElementById('toggleRemove');
-    const pickButton = document.getElementById('pickButton');
-    const slotTrack = document.getElementById('slotTrack');
-    const finalWinner = document.getElementById('finalWinner');
-    const historyList = document.getElementById('historyList');
-    const winnerCard = document.getElementById('winnerCard');
+    const csvFile =
+      document.getElementById('csvFile');
 
-    document.querySelector('label').addEventListener('click', () => {
-      csvFile.click();
-    });
+    const totalParticipants =
+      document.getElementById('totalParticipants');
 
-    csvFile.addEventListener('change', handleCSVUpload);
+    const winnerCount =
+      document.getElementById('winnerCount');
+
+    const toggleRemove =
+      document.getElementById('toggleRemove');
+
+    const pickButton =
+      document.getElementById('pickButton');
+
+    const slotTrack =
+      document.getElementById('slotTrack');
+
+    const finalWinner =
+      document.getElementById('finalWinner');
+
+    const historyList =
+      document.getElementById('historyList');
+
+    const winnerCard =
+      document.getElementById('winnerCard');
+
+    updateUI();
+
+    csvFile.addEventListener(
+      'change',
+      handleCSVUpload
+    );
 
     function handleCSVUpload(event) {
+
       const file = event.target.files[0];
 
       if (!file) return;
@@ -408,29 +548,40 @@
 
         participants = rows;
 
-        totalParticipants.innerText = participants.length.toLocaleString();
+        winners = [];
 
-        showToast(`${participants.length.toLocaleString()} participants loaded successfully 🚀`);
+        saveData();
+
+        updateUI();
+
+        showToast(
+          `${participants.length.toLocaleString()} participants loaded 🚀`
+        );
+
       }
 
       reader.readAsText(file);
+
     }
 
     toggleRemove.addEventListener('click', () => {
 
       autoRemove = !autoRemove;
 
-      toggleRemove.innerHTML = autoRemove
-        ? '✅ Auto Remove Winner: ON'
-        : '❌ Auto Remove Winner: OFF';
+      saveData();
+
+      updateUI();
 
     });
 
     pickButton.addEventListener('click', async () => {
 
       if (participants.length === 0) {
+
         showToast('Upload participants first 📂');
+
         return;
+
       }
 
       if (isRolling) return;
@@ -444,13 +595,20 @@
       const animationPool = [];
 
       for (let i = 0; i < 60; i++) {
+
         animationPool.push(
-          participants[Math.floor(Math.random() * participants.length)]
+          participants[
+            Math.floor(Math.random() * participants.length)
+          ]
         );
+
       }
 
-      const selectedIndex = Math.floor(Math.random() * participants.length);
-      const selectedWinner = participants[selectedIndex];
+      const selectedIndex =
+        Math.floor(Math.random() * participants.length);
+
+      const selectedWinner =
+        participants[selectedIndex];
 
       animationPool.push(selectedWinner);
 
@@ -467,9 +625,12 @@
       requestAnimationFrame(() => {
 
         const itemHeight = 120;
-        const finalPosition = (animationPool.length - 1) * itemHeight;
 
-        slotTrack.style.transform = `translateY(-${finalPosition}px)`;
+        const finalPosition =
+          (animationPool.length - 1) * itemHeight;
+
+        slotTrack.style.transform =
+          `translateY(-${finalPosition}px)`;
 
       });
 
@@ -481,14 +642,15 @@
 
         winners.unshift(selectedWinner);
 
-        renderHistory();
-
         if (autoRemove) {
+
           participants.splice(selectedIndex, 1);
-          totalParticipants.innerText = participants.length.toLocaleString();
+
         }
 
-        winnerCount.innerText = winners.length.toLocaleString();
+        saveData();
+
+        updateUI();
 
         pickButton.innerHTML = '🎰 PICK WINNER';
 
@@ -498,15 +660,44 @@
 
     });
 
+    function updateUI() {
+
+      totalParticipants.innerText =
+        participants.length.toLocaleString();
+
+      winnerCount.innerText =
+        winners.length.toLocaleString();
+
+      toggleRemove.innerHTML = autoRemove
+        ? '✅ Auto Remove Winner: ON'
+        : '❌ Auto Remove Winner: OFF';
+
+      renderHistory();
+
+    }
+
     function renderHistory() {
 
       historyList.innerHTML = '';
+
+      if (winners.length === 0) {
+
+        historyList.innerHTML = `
+          <div class="glass rounded-2xl p-5 text-center text-slate-500">
+            No winners selected yet
+          </div>
+        `;
+
+        return;
+
+      }
 
       winners.forEach((winner, index) => {
 
         const item = document.createElement('div');
 
-        item.className = 'glass rounded-2xl p-5 flex items-center justify-between gap-4';
+        item.className =
+          'glass rounded-2xl p-5 flex items-center justify-between gap-4';
 
         item.innerHTML = `
           <div class="flex items-center gap-4 min-w-0">
@@ -532,15 +723,44 @@
 
     }
 
+    function saveData() {
+
+      localStorage.setItem(
+        'participants',
+        JSON.stringify(participants)
+      );
+
+      localStorage.setItem(
+        'winners',
+        JSON.stringify(winners)
+      );
+
+      localStorage.setItem(
+        'autoRemove',
+        JSON.stringify(autoRemove)
+      );
+
+    }
+
+    function clearAllData() {
+
+      if (!confirm('Hapus semua peserta dan history?')) return;
+
+      localStorage.clear();
+
+      location.reload();
+
+    }
+
     function showToast(message) {
 
-      const toast = document.createElement('div');
+      const toast =
+        document.createElement('div');
 
       toast.className = `
         fixed bottom-6 right-6
         glass px-6 py-4 rounded-2xl
         text-white z-50
-        animate-bounce
       `;
 
       toast.innerText = message;
@@ -548,15 +768,22 @@
       document.body.appendChild(toast);
 
       setTimeout(() => {
+
         toast.remove();
+
       }, 3000);
 
     }
 
     function escapeHtml(text) {
-      const div = document.createElement('div');
+
+      const div =
+        document.createElement('div');
+
       div.textContent = text;
+
       return div.innerHTML;
+
     }
 
   </script>
